@@ -263,3 +263,27 @@ plt.tight_layout()
 plt.savefig("output_3_forecast.png", dpi=150)
 plt.show()
 print("Plot saved: output_3_forecast.png")
+
+#interpretation of results
+
+
+last_actual = close_series.iloc[-1]
+last_forecast = forecast_mean.iloc[-1]
+direction = "UPWARD" if last_forecast > last_actual else "DOWNWARD"
+change_pct = ((last_forecast - last_actual) / last_actual) * 100
+ 
+print("\n--- Result Interpretation ---")
+print(f"Last known closing price : INR {last_actual:.2f}")
+print(f"Forecasted price (day 30): INR {last_forecast:.2f}")
+print(f"Expected trend           : {direction} ({change_pct:+.2f}%)")
+print("""
+Observation:
+The ARIMA model captures the short-term momentum of HEROMOTOCO's stock.
+Based on the forecast:
+- If the model shows an upward movement, the stock may be responding to
+  positive sectoral cues in the two-wheeler automotive space.
+- If downward, it could reflect broader market correction or company-specific
+  headwinds such as input cost pressures or demand slowdown.
+The confidence interval widens over time, which is expected — uncertainty
+grows the further out we predict.
+""")
