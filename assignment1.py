@@ -163,57 +163,6 @@ print(f"RMSE : {rmse:.2f}")
 print(f"MAE  : {mae:.2f}")
 print(f"MAPE : {mape:.2f}%")
 
-# Future Price prediction for next 30 days
-
-# (a) Retrain on full data and forecast 30 days ahead
-final_model = ARIMA(close_series, order=(p, d, q))
-final_fitted = final_model.fit()
- 
-forecast_result = final_fitted.get_forecast(steps=30)
-forecast_mean = forecast_result.predicted_mean
-forecast_ci = forecast_result.conf_int()
- 
-# Create future date index (only weekdays — markets closed on weekends)
-last_date = close_series.index[-1]
-future_dates = pd.bdate_range(start=last_date + pd.Timedelta(days=1), periods=30)
-forecast_mean.index = future_dates
-forecast_ci.index = future_dates
- 
-print("\nForecasted closing prices for next 30 trading days:")
-print(forecast_mean.round(2).to_string())
- 
- 
-# (b) Plot historical + forecasted prices
-fig, ax = plt.subplots(figsize=(14, 6))
- 
-# Plot last 90 days of historical data for clarity
-ax.plot(close_series[-90:], label="Historical Price", color="#1f77b4", linewidth=1.8)
- 
-# Plot forecast
-ax.plot(forecast_mean, label="Forecasted Price (Next 30 Days)", color="#e74c3c",
-        linewidth=2, linestyle="--", marker="o", markersize=4)
- 
-# Confidence interval shading
-ax.fill_between(future_dates,
-                forecast_ci.iloc[:, 0],
-                forecast_ci.iloc[:, 1],
-                color="#e74c3c", alpha=0.15, label="95% Confidence Interval")
- 
-ax.axvline(x=close_series.index[-1], color="gray", linestyle=":", linewidth=1.5,
-           label="Forecast Start")
- 
-ax.set_title("HEROMOTOCO — Historical vs Forecasted Closing Price", fontsize=14, fontweight="bold")
-ax.set_xlabel("Date")
-ax.set_ylabel("Closing Price (INR)")
-ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))
-ax.xaxis.set_major_locator(mdates.MonthLocator())
-ax.legend()
-plt.xticks(rotation=45)
-plt.tight_layout()
-plt.savefig("output_3_forecast.png", dpi=150)
-plt.show()
-print("Plot saved: output_3_forecast.png")
-
 #future prediction for next 30 days
 
 final_model = ARIMA(close_series, order=(p, d, q))
