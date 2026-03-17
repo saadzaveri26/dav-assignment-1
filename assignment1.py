@@ -37,6 +37,7 @@ print("Columns after rename:", df.columns.tolist())  # confirm it worked
 
 df["close"] = df["close"].astype(str).str.replace(",", "").astype(float)
 df["date"] = pd.to_datetime(df["date"], dayfirst=True)
+ 
 
 df = df.sort_values("date").reset_index(drop=True)
  
@@ -71,9 +72,8 @@ plt.savefig("output_1_closing_price_trend.png", dpi=150)
 plt.show()
 print("Plot saved: output_1_closing_price_trend.png")
 
-# ARIMA MODEL IMPLEMENTATION
+# ARIMA model implementation
 
-# We will work with just the closing price series
 close_series = df.set_index("date")["close"]
  
  
